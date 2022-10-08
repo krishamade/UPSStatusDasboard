@@ -1,0 +1,559 @@
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-image: url(https://cdn.oakland.k12.mi.us/img/static/events_bg.jpg);
+        }
+
+
+        [v-cloak] {
+            display: none
+        }
+
+        html {
+            overflow-y: hidden
+        }
+
+        #main {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: 100%;
+
+            background-color: #38305a69;
+        }
+
+        #header {
+            width: 300px;
+            background-color: #2c3e5098;
+            border-right: 1px solid #1f2c39;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #body {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #body-header {
+            height: 236px;
+            flex-direction: row;
+        }
+
+        #body-body {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+        }
+
+        #OSLogoButton {
+            height: 65px;
+            width: 200px;
+            margin: 25px auto 0 auto;
+            padding: 0px
+        }
+
+        #OSLogoButton:focus {
+            box-shadow: none;
+        }
+
+        #header-title {
+            text-align: center;
+            margin: 25px 0px;
+        }
+
+        .btn-header {
+            text-align: left;
+            margin-bottom: 3px;
+            border-width: 2px
+        }
+
+        .btn-outline-dark.disabled {
+            color: #000000
+        }
+
+        .btn-outline-success:hover,
+        .btn-outline-success-active {
+            background-color: #28a74650;
+            color: white;
+        }
+
+        .btn-outline-warning:hover,
+        .btn-outline-warning-active {
+            background-color: #ffc10750;
+            color: white;
+        }
+
+        .btn-outline-danger:hover,
+        .btn-outline-danger-active {
+            background-color: #dc354550;
+            color: white;
+        }
+
+        .btn-outline-success:focus,
+        .btn-outline-warning:focus,
+        .btn-outline-danger:focus {
+            box-shadow: none;
+        }
+
+        h1 {
+            color: #f6f6f6;
+        }
+
+        #body-header-title {
+            display: flex;
+            flex-direction: row;
+            margin: 35px 0px 40px 50px;
+        }
+
+        #body-header-buttongroup {
+            display: flex;
+            flex-direction: row;
+            height: 50px;
+            padding: 10px 15px;
+            margin: 0px 50px 0px 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-custom {
+            margin-left: 10px;
+            padding: 3px 10px;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-custom:focus {
+            color: white;
+            box-shadow: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #2c3e5099;
+            color: white;
+        }
+
+        .btn-custom-active {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            box-shadow: none;
+        }
+
+        .btn-custom-active:hover {
+            background-color: #2c3e50;
+        }
+
+        .col {
+            text-align: center;
+            color: white;
+            background-color: #2c3e508a;
+            height: 225px;
+            width: 300px;
+            margin: 10px;
+        }
+
+        .col-red {
+            background-color: #502c2c8a;
+        }
+
+        .col-orange {
+            background-color: #50432c8a;
+        }
+
+        .col-empty {
+            opacity: 0;
+        }
+
+        h3 {
+            margin: 5px;
+        }
+
+        .progress {
+            height: 25px;
+            font-size: 20px;
+            background-color: #2c3e50;
+        }
+
+        #body-body-container {
+            height: 100%;
+            overflow-y: scroll
+        }
+
+        #body-body-container::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        #body-body-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #body-body-container::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2)
+        }
+
+        .district-img {
+            height: 25px;
+            width: 25px;
+            margin-right: 15px
+        }
+
+        .statuslog {
+            background-color: #2c3e5098;
+            border-radius: .25rem !important;
+            border-color: #343a40 !important;
+            border: 1px solid !important;
+            padding: 10px;
+
+
+        }
+
+        .statusitem {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        #district-button-group {
+            height: auto;
+            position: relative;
+            overflow-y: scroll
+        }
+
+        #district-button-group::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        #district-button-group::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #district-button-group::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2)
+        }
+
+        .btn-group-vertical {
+            justify-content: unset !important;
+        }
+
+        .badge {
+            width: 40px
+        }
+
+        .normal {
+            color: rgb(200, 200, 200);
+        }
+
+        p {
+            margin-bottom: 0px
+        }
+
+        .container {
+            max-width: unset !important;
+            margin: 0px 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div id="header">
+            <button id="OSLogoButton" type="button" class="btn">
+                <img id="logo" src="https://cdn.oakland.k12.mi.us/img/logo/logo.png" alt="Oakland Schools">
+            </button>
+            <h1 id="header-title"><br>Districts</h1>
+            <div id="district-button-group" class="btn-group-vertical"></div>
+        </div>
+        <div id="body">
+            <div id="body-header">
+                <h1 id="body-header-title">UPS Status Dashboard - Connecting...</h1>
+                <div id="body-header-buttongroup" class="rounded-pill border border-dark"></div>
+            </div>
+            <div id="body-body">
+                <div id="body-body-container" class="container">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        let currentDistrictSelected = "Main Menu"
+        let currentHeaderSelected = 'Status Log'
+        let currentSensorArray = []
+
+        $("#OSLogoButton").click(function (element) {
+            if (currentDistrictSelected != "Main Menu") {
+                clearHeaderButtonSelection()
+                currentDistrictSelected = "Main Menu"
+                currentHeaderSelected = "Status Log"
+                ws.send(JSON.stringify({ type: "Main Menu Update" }))
+                showMainMenu()
+            }
+        });
+
+        function createDistrictButtons(allDistricts, activeDistricts) {
+            for (district in allDistricts) {
+                theDistrict = allDistricts[district]
+                currentDistrictMin = theDistrict.replace(/ /g, "").toLowerCase()
+                classType = activeDistricts.includes(theDistrict) ? "btn-outline-success" : "btn-outline-dark disabled"
+
+                $("#district-button-group").append(
+                    `
+                    <button id="Button-${currentDistrictMin}" type="button" class="btn btn-header ${classType}">
+                        <img id="Logo-${currentDistrictMin}" class="district-img" src="./assets/logo_${currentDistrictMin}.png" alt="${theDistrict}" onerror="this.style.display='none'">${theDistrict}
+                        
+                    </button>
+                    `
+                )
+            }
+            $(".btn-header").click(function (element) {
+                let buttonText = element.currentTarget.innerText
+                let buttonClassList = element.currentTarget.classList
+                if (!element.target.classList.contains("disabled") && buttonText != currentDistrictSelected) {
+                    clearHeaderButtonSelection()
+                    if (buttonClassList.contains("btn-outline-success")) {
+                        $(this).addClass("btn-outline-success-active")
+                    } else if (buttonClassList.contains("btn-outline-warning")) {
+                        $(this).addClass("btn-outline-warning-active")
+                    } else if (buttonClassList.contains("btn-outline-failed")) {
+                        $(this).addClass("btn-outline-failed-active")
+                    }
+                    currentDistrictSelected = buttonText
+                    currentHeaderSelected = 'All Buildings'
+
+                    sendData = {
+                        type: "District Update",
+                        district: buttonText
+                    }
+                    ws.send(JSON.stringify(sendData))
+                    setHeaderTitle(buttonText)
+                    clearPillButtons()
+                    clearBodyContainer()
+                    removeMainMenu()
+                }
+            });
+        }
+
+        function createPillButtons(nameArray) {
+            for (name in nameArray) {
+                let currentName = nameArray[name]
+                let status = '';
+                (name == nameArray.indexOf(currentHeaderSelected)) ? status = "btn-custom-active" : status = ''
+                $("#body-header-buttongroup").append(`<button id="HeaderButton-${currentName}" type="button" class="btn btn-custom ${status} rounded-pill">${currentName}</button>`)
+            }
+
+            $(".btn-custom").click(function (element) {
+                $(".btn-custom").each(function () {
+                    $(this).removeClass("btn-custom-active");
+                });
+                $(this).addClass("btn-custom-active")
+                currentHeaderSelected = element.target.innerHTML;
+
+                clearBodyContainer()
+                createUPSGrid()
+            });
+        }
+
+        function compare(first, second) {
+            if (first.deviceName > second.deviceName) return 1;
+            if (second.deviceName > first.deviceName) return -1;
+            return 0
+        }
+
+        function createUPSGrid() {
+            const columnsPerRow = Math.floor($("#body-body-container").width()/250);
+            let itemArray = []
+            if (currentHeaderSelected != "All Buildings") {
+                currentSensorArray.forEach(function (element) {
+                    let elementName = element.deviceName.split('-')[0]
+                    if (elementName == currentHeaderSelected) { itemArray.push(element) }
+                })
+            } else {
+                itemArray = currentSensorArray
+            }
+            itemArray.sort(compare)
+
+            for (i = 0; i < Math.ceil(itemArray.length / columnsPerRow); i++) {
+                $("#body-body-container").append(`<div id="body-row-${i}" class="row"></div>`)
+                for (j = i * columnsPerRow; j < (i * columnsPerRow) + columnsPerRow; j++) {
+                    if (j < itemArray.length) {
+                        let currentItem = itemArray[j]
+                        let currentNameString = currentItem.deviceName
+                        let currentItemName = currentHeaderSelected == "All Buildings" ? currentNameString.split("-")[0] + "-" + currentNameString.split("-")[1] : currentNameString.split("-")[1]
+
+                        let currentStatus = currentItem.statustext
+                        let currentTemperature = currentItem.temperature != "" ? "Temperature: " + currentItem.temperature : ""
+                        let currentTimeTime;
+                        let progressbarClass;
+                        let headerClass = "col";
+                        if (currentStatus == "Up") {
+                            currentTimeTime = currentItem.uptimetime
+                        } else if (currentStatus == "Down") {
+                            currentTimeTime = currentItem.downtimetime
+                            headerClass = "col col-red"
+                        } else if (currentStatus == "Paused") {
+                            currentTimeTime = "None"
+                            headerClass = "col col-orange"
+                        }
+
+                        $(`#body-row-${i}`).append(
+                            `
+                            <div class="${headerClass} rounded">
+                                <h3 class="border-bottom">${currentItemName}</h3>
+                                <p>
+                                    Status: ${currentStatus} <br>
+                                    ${currentStatus}time: ${currentTimeTime} <br>
+                                    Input Voltage: ${currentItem.voltageinput} <br>
+                                    Output Voltage: ${currentItem.voltageoutput} <br>
+                                    ${currentTemperature} <br>
+                                </p>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                        role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0"
+                                        aria-valuemax="100">Battery Time: ${currentItem.batterytimecurrent}</div>
+                                </div>
+                            </div>
+                            `
+                        )
+                    } else {
+                        $(`#body-row-${i}`).append(`<div id="body-col-${j}" class="col col-empty rounded">`)
+                    }
+                }
+            }
+        }
+
+        function showStatusLog() {
+            $("#body-body-container").addClass("statuslog")
+        }
+
+        function removeStatusLog() {
+            $("#body-body-container").removeClass("statuslog")
+        }
+
+        function clearPillButtons() {
+            $("#body-header-buttongroup").children().remove()
+        }
+
+        function clearBodyContainer() {
+            $("#body-body-container").children().remove()
+        }
+
+        function clearDistrictList() {
+            $("#district-button-group").children().remove()
+        }
+
+        function clearHeaderButtonSelection() {
+            $(".btn-header").each(function (element) {
+                $(this).removeClass("btn-outline-success-active");
+                $(this).removeClass("btn-outline-warning-active");
+                $(this).removeClass("btn-outline-failed-active");
+            });
+        }
+
+        function setHeaderTitle(text) {
+            $('#body-header-title').text("UPS Status Dashboard - " + text)
+        }
+
+        function showMainMenu() {
+            clearPillButtons()
+            createPillButtons(["Status Log"])
+            clearBodyContainer()
+            showStatusLog()
+            setHeaderTitle("Main Menu")
+        }
+
+        function removeMainMenu() {
+            removeStatusLog()
+        }
+
+        function showNothing() {
+            clearPillButtons()
+            clearDistrictList()
+            clearBodyContainer()
+            removeStatusLog()
+            setHeaderTitle("Attempting to Reconnect...")
+        }
+
+        function clearDistrictDash() {
+            clearPillButtons()
+            clearBodyContainer()
+        }
+
+        function setStatusLog(dataArray) {
+            $("#body-body-container").children().remove()
+            for (data in dataArray.reverse()) {
+                currentStatus = dataArray[data]
+                $("#body-body-container").first().append(
+                    `
+                    <p class="${currentStatus.priority}">${currentStatus.message}</p>
+                    `
+                )
+
+            }
+        }
+
+
+
+        function connectWebSocket() {
+            ws = new WebSocket(`ws://${location.hostname}:8080`)
+            console.log("Connecting to WebSocket Server.")
+
+            ws.onopen = function () {
+                console.log('Connected to WebSocket Server.')
+                showMainMenu()
+                ws.send(JSON.stringify({ type: "Initial Connect" }))
+            }
+            ws.onmessage = function (e) {
+                let payload = JSON.parse(e.data)
+                console.log(payload)
+
+                if (payload.type == "Initial Districts") {
+                    createDistrictButtons(payload.allDistricts, payload.activeDistricts)
+                } else if (payload.type == "District Update") {
+                    let buildingArray = ['All Buildings']
+                    let tempArray = []
+                    payload.districtData.SensorArray.forEach(function (element) {
+                        let elementName = element.deviceName.split('-')[0]
+                        if (!tempArray.includes(elementName)) { tempArray.push(elementName) }
+                    })
+                    tempArray.sort()
+                    buildingArray = buildingArray.concat(tempArray)
+                    currentSensorArray = payload.districtData.SensorArray
+
+                    clearDistrictDash()
+                    createPillButtons(buildingArray)
+                    createUPSGrid()
+                } else if (payload.type == "Main Menu Data") {
+                    setStatusLog(payload.mainmenuData.Statuslog)
+                }
+            }
+            ws.onclose = function () {
+                console.log('Server is unreachable.')
+                showNothing()
+                setTimeout(connectWebSocket, 5000)
+            }
+        }
+
+        connectWebSocket()
+
+
+    </script>
+</body>
+
+</html>
